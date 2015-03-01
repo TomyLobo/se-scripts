@@ -34,7 +34,7 @@ void compactInventory(IMyInventoryOwner container) {
     for (int targetSlot = items.Count - 1; targetSlot >= 0; targetSlot--) {
         var targetContent = items[targetSlot].Content;
 
-        for (int sourceSlot = items.Count - 1; sourceSlot >= targetSlot + 1; sourceSlot--) {
+        for (int sourceSlot = items.Count - 1; sourceSlot >= targetSlot; sourceSlot--) {
             var sourceContent = items[sourceSlot].Content;
 
             if (!targetContent.CanStack(sourceContent)) {
