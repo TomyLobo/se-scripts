@@ -4,8 +4,8 @@ void Main() {
     List<IMyTerminalBlock> resultContainers = new List<IMyTerminalBlock>();
 
     GridTerminalSystem.GetBlocksOfType<IMyAssembler>(assemblers);
-    ingotContainers.Add(GridTerminalSystem.GetBlockWithName("SmallCargo"));
-    resultContainers.Add(GridTerminalSystem.GetBlockWithName("SmallCargo"));
+    ingotContainers.Add(GridTerminalSystem.GetBlockWithName("DS-1 IngotContainer"));
+    resultContainers.Add(GridTerminalSystem.GetBlockWithName("DS-1 ResultContainer"));
 
     for(int i = 0; i < assemblers.Count; i++) {
         cleanAssemblerInput(assemblers[i] as IMyAssembler, ingotContainers);
