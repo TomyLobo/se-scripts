@@ -45,6 +45,7 @@ void compactInventory(IMyInventoryOwner container) {
 
             // Transfer von sourceSlot nach targetSlot
             containerInv.TransferItemTo(containerInv, sourceSlot, targetSlot, false, null);
+            items = containerInv.GetItems();
         }
     }
 }
