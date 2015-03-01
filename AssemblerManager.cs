@@ -15,7 +15,7 @@ void Main() {
 
 
 void cleanAssemblerOutput(IMyAssembler assembler, List<IMyTerminalBlock> containers) {
-    var assemblerInv = assembler.GetInventory(1);
+    IMyInventory assemblerInv = assembler.GetInventory(1);
 
     // Solange der Assember noch nicht leer ist...
     while (assemblerInv.CurrentVolume != 0) {
@@ -26,7 +26,7 @@ void cleanAssemblerOutput(IMyAssembler assembler, List<IMyTerminalBlock> contain
             return;
 
         // ...und transferiere alle Items dahin.
-        var assemblerItems = assemblerInv.GetItems();
+        List<IMyInventoryItem> assemblerItems = assemblerInv.GetItems();
         for (int i = assemblerItems.Count - 1; i >= 0; i--) {
             assemblerInv.TransferItemTo(containerDestination, i, null, true, null);
         }
@@ -43,8 +43,8 @@ void cleanAssemblerInput(IMyAssembler assembler, List<IMyTerminalBlock> containe
     if (containerDestination == null)
         return;
 
-    var assemblerInv = assembler.GetInventory(0);
-    var assemblerItems = assemblerInv.GetItems();
+    IMyInventory assemblerInv = assembler.GetInventory(0);
+    List<IMyInventoryItem> assemblerItems = assemblerInv.GetItems();
 
     for (int i = assemblerItems.Count -1; i >= 0; i--) {
         assemblerInv.TransferItemTo(containerDestination, i, null, true, null);
@@ -66,7 +66,7 @@ bool IsFull(IMyInventory inv) {
 IMyInventory getFirstEmpty(List<IMyTerminalBlock> containers) {
     // search our containers until we find an empty one
     for (int n = 0; n < containers.Count; n++) {
-        var containerInv = (containers[n] as IMyInventoryOwner).GetInventory(0);
+        IMyInventory containerInv = (containers[n] as IMyInventoryOwner).GetInventory(0);
         if (!IsFull(containerInv)) {
             return containerInv;
         }
