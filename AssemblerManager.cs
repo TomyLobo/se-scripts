@@ -34,14 +34,16 @@ void compactInventory(IMyInventoryOwner container) {
     for (int targetSlot = items.Count - 1; targetSlot >= 0; targetSlot--) {
         var targetContent = items[targetSlot].Content;
 
+        // Alle nachfolgenden Items durchiterieren
         for (int sourceSlot = items.Count - 1; sourceSlot >= targetSlot; sourceSlot--) {
             var sourceContent = items[sourceSlot].Content;
 
+            // Passt nicht => weiter
             if (!targetContent.CanStack(sourceContent)) {
                 continue;
             }
 
-            // transfer von i nach targetSlot
+            // Transfer von sourceSlot nach targetSlot
             IMyInventory targetInv = containerInv;
             containerInv.TransferItemTo(targetInv, sourceSlot, targetSlot, false, null);
         }
