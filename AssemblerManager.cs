@@ -7,7 +7,7 @@ void Main() {
     ingotContainers.Add(GridTerminalSystem.GetBlockWithName("DS-1 IngotContainer"));
     resultContainers.Add(GridTerminalSystem.GetBlockWithName("DS-1 ResultContainer"));
 
-    for(int i = 0; i < assemblers.Count; i++) {
+    for (int i = 0; i < assemblers.Count; i++) {
         IMyAssembler assembler = assemblers[i] as IMyAssembler;
         cleanAssemblerInput(assembler, ingotContainers);
         cleanAssemblerOutput(assembler, resultContainers);
