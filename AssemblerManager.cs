@@ -57,7 +57,7 @@ float getPercent(IMyInventory inv) {
 
 
 bool IsFull(IMyInventory inv) {
-    if (getPercent(inv) >= 99)
+    if (getPercent(inv) >= 95)
         return true;
     else
         return false;
