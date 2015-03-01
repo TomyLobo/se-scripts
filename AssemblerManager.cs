@@ -12,6 +12,40 @@ void Main() {
         cleanAssemblerInput(assembler, ingotContainers);
         cleanAssemblerOutput(assembler, resultContainers);
     }
+
+    compactInventories(ingotContainers);
+    compactInventories(resultContainers);
+}
+
+void compactInventories(List<IMyTerminalBlock> containers) {
+    for(int i = 0; i < containers.Count; i++) {
+        IMyInventoryOwner container = containers[i] as IMyInventoryOwner;
+        compactInventory(container);
+    }
+}
+
+
+void compactInventory(IMyInventoryOwner container) {
+    Dictionary<string, int> itemIds = new Dictionary<string, int>();
+
+    // Alles durchiterieren
+    IMyInventory containerInv = container.GetInventory(0);
+    List<IMyInventoryItem> items = containerInv.GetItems();
+    for (int targetSlot = items.Count - 1; targetSlot >= 0; targetSlot--) {
+        var targetContent = items[targetSlot].Content;
+
+        for (int sourceSlot = items.Count - 1; sourceSlot >= targetSlot + 1; sourceSlot--) {
+            var sourceContent = items[sourceSlot].Content;
+
+            if (!targetContent.CanStack(sourceContent)) {
+                continue;
+            }
+
+            // transfer von i nach targetSlot
+            IMyInventory targetInv = containerInv;
+            containerInv.TransferItemTo(targetInv, sourceSlot, targetSlot, false, null);
+        }
+    }
 }
 
 
