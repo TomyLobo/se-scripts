@@ -15,7 +15,6 @@ void Main() {
 
 
 void cleanAssemblerOutput(IMyAssembler assembler, List<IMyTerminalBlock> containers) {
-    // TODO: alle items aus dem output in den container schieben
     var assemblerInv = (assembler as IMyInventoryOwner).GetInventory(1);
 
     // Solange der Assember noch nicht leer ist...
@@ -28,7 +27,7 @@ void cleanAssemblerOutput(IMyAssembler assembler, List<IMyTerminalBlock> contain
 
         // ...und transferiere alle Items dahin.
         var assemblerItems = assemblerInv.GetItems();
-        for (int i = assemblerItems.Count -1; i >= 0; i--) {
+        for (int i = assemblerItems.Count - 1; i >= 0; i--) {
             assemblerInv.TransferItemTo(containerDestination, i, null, true, null);
         }
     }
