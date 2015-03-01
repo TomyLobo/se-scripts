@@ -15,7 +15,7 @@ void Main() {
 
 
 void cleanAssemblerOutput(IMyAssembler assembler, List<IMyTerminalBlock> containers) {
-    var assemblerInv = (assembler as IMyInventoryOwner).GetInventory(1);
+    var assemblerInv = assembler.GetInventory(1);
 
     // Solange der Assember noch nicht leer ist...
     while (assemblerInv.CurrentVolume != 0) {
@@ -43,7 +43,7 @@ void cleanAssemblerInput(IMyAssembler assembler, List<IMyTerminalBlock> containe
     if (containerDestination == null)
         return;
 
-    var assemblerInv = (assembler as IMyInventoryOwner).GetInventory(0);
+    var assemblerInv = assembler.GetInventory(0);
     var assemblerItems = assemblerInv.GetItems();
 
     for (int i = assemblerItems.Count -1; i >= 0; i--) {
