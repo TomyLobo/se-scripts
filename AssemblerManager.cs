@@ -8,8 +8,9 @@ void Main() {
     resultContainers.Add(GridTerminalSystem.GetBlockWithName("DS-1 ResultContainer"));
 
     for(int i = 0; i < assemblers.Count; i++) {
-        cleanAssemblerInput(assemblers[i] as IMyAssembler, ingotContainers);
-        cleanAssemblerOutput(assemblers[i] as IMyAssembler, resultContainers);
+        IMyAssembler assembler = assemblers[i] as IMyAssembler;
+        cleanAssemblerInput(assembler, ingotContainers);
+        cleanAssemblerOutput(assembler, resultContainers);
     }
 }
 
@@ -66,7 +67,8 @@ bool IsFull(IMyInventory inv) {
 IMyInventory getFirstEmpty(List<IMyTerminalBlock> containers) {
     // search our containers until we find an empty one
     for (int n = 0; n < containers.Count; n++) {
-        IMyInventory containerInv = (containers[n] as IMyInventoryOwner).GetInventory(0);
+        IMyInventoryOwner container = containers[n] as IMyInventoryOwner;
+        IMyInventory containerInv = container.GetInventory(0);
         if (!IsFull(containerInv)) {
             return containerInv;
         }
