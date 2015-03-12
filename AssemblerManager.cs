@@ -18,7 +18,7 @@ void Main() {
 }
 
 void compactInventories(List<IMyTerminalBlock> containers) {
-    for(int i = 0; i < containers.Count; i++) {
+    for (int i = 0; i < containers.Count; i++) {
         IMyInventoryOwner container = containers[i] as IMyInventoryOwner;
         compactInventory(container);
     }
