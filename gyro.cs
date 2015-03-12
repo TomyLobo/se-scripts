@@ -11,12 +11,23 @@ void Main() {
         //Matrix localMatrix = cubeGrid.LocalMatrix;
         //MatrixD worldMatrix = cubeGrid.WorldMatrix;
         //var phys = (cubeGrid as Sandbox.ModAPI.IMyEntity).Physics;
-        Matrix matrix = new Matrix();
-        var orientation = gyro.Orientation;
-        orientation.GetMatrix(out matrix);
+        //Matrix matrix = new Matrix();
+        //var orientation = gyro.Orientation;
+        //orientation.GetMatrix(out matrix);
         //throw new Exception(orientation.ToString());
         //throw new Exception(gyro.Yaw.ToString());
-        gyro.SetCustomName(getRotation(gyro).ToString());
+        var currentRotation = getRotation(gyro);
+        gyro.SetCustomName(currentRotation.ToString());
+        //var targetRotation = Matrix.Identity; // invalid program -_-
+        var targetRotation = new Matrix(
+            1,0,0,0,
+            0,1,0,0,
+            0,0,1,0,
+            0,0,0,1
+        );
+        var targetAngularVelocity = targetRotation * Matrix.Invert(currentRotation);
+        setAngularVelocity(gyro, ref targetAngularVelocity);
+        
         //Quaternion.CreateFromYawPitchRoll
         //quat.GetAxisAngle
 
@@ -35,11 +46,11 @@ void Main() {
     //GridTerminalSystem.GetBlockWithName("DS-1 IngotContainer")
 }
 
-Quaternion getRotation(IMyGyro gyro) {
+Matrix getRotation(IMyGyro gyro) {
 /*    return getRotation(gyro.CubeGrid);
 }
 
-Quaternion getRotation(IMyCubeGrid cubeGrid) {*/
+Matrix getRotation(IMyCubeGrid cubeGrid) {*/
     IMyCubeGrid cubeGrid = gyro.CubeGrid;
     Matrix matrix;
     gyro.Orientation.GetMatrix(out matrix);
@@ -55,24 +66,29 @@ Quaternion getRotation(IMyCubeGrid cubeGrid) {*/
     forward.Normalize();
     up.Normalize();
 
-    return Quaternion.CreateFromForwardUp(forward, up);
+    return Matrix.CreateFromDir(forward, up);
 }
 
-Quaternion getAngularVelocity(IMyGyro gyro) {
-    return Quaternion.CreateFromYawPitchRoll(gyro.Yaw, gyro.Pitch, gyro.Roll);
+Matrix getAngularVelocity(IMyGyro gyro) {
+    return Matrix.CreateFromYawPitchRoll(gyro.Yaw, gyro.Pitch, gyro.Roll);
 }
 
-void setAngularVelocity(IMyGyro gyro, Quaternion quaternion) {
-    double targetYaw = 0;
-    double targetPitch = 0;
-    double targetRoll = 0;
+void setAngularVelocity(IMyGyro gyro, ref Matrix matrix) {
+    Vector3 xyz = new Vector3(0,0,0);
+    Matrix.GetEulerAnglesXYZ(ref matrix, out xyz);
 
+    setAngularVelocity(gyro, xyz.X, xyz.Y, xyz.Z);
+}
+
+void setAngularVelocity(IMyGyro gyro, float targetYaw, float targetPitch, float targetRoll) {
     setAngularVelocity(gyro, "Yaw", gyro.Yaw, targetYaw);
     setAngularVelocity(gyro, "Pitch", gyro.Pitch, targetPitch);
     setAngularVelocity(gyro, "Roll", gyro.Roll, targetRoll);
 }
 
-void setAngularVelocity(IMyGyro gyro, string angleComponentName, double currentAngle, double targetAngle) {
+void setAngularVelocity(IMyGyro gyro, string angleComponentName, float currentAngle, float targetAngle) {
+    targetAngle *= -0.00000001f;
+    gyro.SetCustomName("acm="+angleComponentName+", cur="+currentAngle+", target="+targetAngle );
     if (targetAngle < currentAngle) {
         gyro.ApplyAction("Decrease" + angleComponentName);
     }
