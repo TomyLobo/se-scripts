@@ -6,18 +6,43 @@ using System.Threading.Tasks;
 
 namespace opMatrix
 {
-    class FloatVector3
+    public class FloatVector3
     {
-        float x =0;
-        float y =0;
-        float z =0;
+        private float[] data = new float[3];
 
+        public float x
+        {
+            get { return data[1]; }
+        }
+        public float y
+        {
+            get { return data[2]; }
+        }
+        public float z
+        {
+            get { return data[3]; }
+        }
+        public FloatVector3() { }
 
         public FloatVector3(float X, float Y, float Z)
         {
-            this.x = X;
-            this.y = Y;
-            this.z = Z;
+            data[1] = X;
+            data[2] = Y;
+            data[3] = Z;
+        }
+
+        public float this[int index]
+        {
+            get
+            {
+                //TODO: row column check einbauen
+                return data[index];
+            }
+            set
+            {
+                data[index] = value;
+
+            }
         }
         #region operator
         public static FloatVector3 operator /(FloatVector3 v1, FloatVector3 v2)
@@ -153,9 +178,9 @@ namespace opMatrix
         public void normalize()
         {
             float len = length();
-            this.x = x / len;
-            this.y = y / len;
-            this.z = z / len;
+            data[1] = x / len;
+            data[2] = y / len;
+            data[3] = z / len;
         }
         public FloatVector3 normalized(FloatVector3 v)
         {
