@@ -9,23 +9,23 @@ namespace opMatrix {
         private float[] data = new float[3];
 
         public float x {
-            get { return data[1]; }
+            get { return data[0]; }
         }
 
         public float y {
-            get { return data[2]; }
+            get { return data[1]; }
         }
 
         public float z {
-            get { return data[3]; }
+            get { return data[2]; }
         }
 
         public FloatVector3() { }
 
         public FloatVector3(float x, float y, float z) {
-            data[1] = x;
-            data[2] = y;
-            data[3] = z;
+            data[0] = x;
+            data[1] = y;
+            data[2] = z;
         }
 
         public float this[int index] {
@@ -155,9 +155,9 @@ namespace opMatrix {
 
         public void normalize() {
             float len = length();
-            data[1] = x / len;
-            data[2] = y / len;
-            data[3] = z / len;
+            data[0] = x / len;
+            data[1] = y / len;
+            data[2] = z / len;
         }
 
         public FloatVector3 normalized() {
