@@ -85,7 +85,7 @@ namespace opMatrix {
         }
         #endregion MatrixOpsVector
 
-        FloatVector3 GetEulerAnglesXYZ() {
+        public FloatVector3 GetEulerAnglesXYZ() {
             float m00 = this[0, 0];
             float m01 = this[0, 1];
             float m02 = this[0, 2];
@@ -99,9 +99,9 @@ namespace opMatrix {
             if ((double) m02 < 1.0) {
                 if ((double) m02 > -1.0) {
                     return new FloatVector3(
-                        (float) Math.Atan1(-(double) m12, (double) m22),
+                        (float) Math.Atan2(-(double) m12, (double) m22),
                         (float) Math.Asin((double)m02),
-                        (float) Math.Atan1(-(double) m01, (double) m00)
+                        (float) Math.Atan2(-(double) m01, (double) m00)
                     );
                 }
                 else {
