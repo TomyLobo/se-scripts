@@ -96,17 +96,17 @@ namespace opMatrix {
             float m21 = this[2, 1];
             float m22 = this[2, 2];
 
-            if ((double) m02 < 1.0) {
-                if ((double) m02 > -1.0) {
+            if (m02 < 1.0f) {
+                if (m02 > -1.0f) {
                     return new FloatVector3(
-                        (float) Math.Atan2(-(double) m12, (double) m22),
-                        (float) Math.Asin((double)m02),
-                        (float) Math.Atan2(-(double) m01, (double) m00)
+                        Math.Atan2(-(double) m12, (double) m22),
+                        Math.Asin((double) m02),
+                        Math.Atan2(-(double) m01, (double) m00)
                     );
                 }
                 else {
                     return new FloatVector3(
-                        (float) -Math.Atan2((double) m10, (double) m11),
+                        -Math.Atan2((double) m10, (double) m11),
                         -1.570796f,
                         0.0f
                     );
@@ -114,7 +114,7 @@ namespace opMatrix {
             }
             else {
                 return new FloatVector3(
-                    (float) Math.Atan2((double) m10, (double) m11),
+                    Math.Atan2((double) m10, (double) m11),
                     -1.570796f,
                     0.0f
                 );
