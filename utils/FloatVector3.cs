@@ -182,10 +182,10 @@ namespace opMatrix
             data[2] = y / len;
             data[3] = z / len;
         }
-        public FloatVector3 normalized(FloatVector3 v)
+        public FloatVector3 normalized()
         {
-            v.normalize();
-            return v;
+            this.normalize();
+            return this;
         }
     }
 }
