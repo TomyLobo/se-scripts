@@ -30,6 +30,13 @@ namespace opMatrix
 			data[6] = a20; data[7] = a21; data[8] = a22;
 		}
 
+        public static FloatMatrix3 CreateFromForwardUp(FloatVector3 forward, FloatVector3 up)
+        {
+            forward = forward.normalized();
+            up = up.normalized();
+            return new FloatMatrix3(forward, up, forward.cross(up));
+        }
+
         #region accessors
         public float this[int row, int col]
         {
