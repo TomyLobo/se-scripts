@@ -51,9 +51,11 @@ namespace opMatrix {
         #region utils
         public FloatMatrix3 transpose() {
             FloatMatrix3 ret = new FloatMatrix3();
-            for (int i = 0; i < 3; i++)
-                for (int j = 0; j < 3; j++)
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 3; j++) {
                     ret[i, j] = data[i * 3 + j];
+                }
+            }
             return ret;
         }
         #endregion utils
