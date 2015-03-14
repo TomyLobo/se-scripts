@@ -10,14 +10,17 @@ namespace opMatrix {
 
         public float x {
             get { return data[0]; }
+            set { data[0] = value; }
         }
 
         public float y {
             get { return data[1]; }
+            set { data[1] = value; }
         }
 
         public float z {
             get { return data[2]; }
+            set { data[2] = value; }
         }
 
         public FloatVector3() { }
@@ -155,9 +158,9 @@ namespace opMatrix {
 
         public void normalize() {
             float len = length();
-            data[0] = x / len;
-            data[1] = y / len;
-            data[2] = z / len;
+            x /= len;
+            y /= len;
+            z /= len;
         }
 
         public FloatVector3 normalized() {
