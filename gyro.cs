@@ -91,7 +91,7 @@ void setAngularVelocity(IMyGyro gyro, ref Matrix matrix) {
 }
 
 void setAngularVelocity(IMyGyro gyro, float targetYaw, float targetPitch, float targetRoll) {
-    gyro.SetCustomName("targetYaw="+targetYaw+", targetPitch="+targetPitch+", targetRoll="+targetRoll+", gyro.Yaw="+gyro.Yaw+", gyro.Pitch="+gyro.Pitch+",  gyro.Roll="+ gyro.Roll  );
+    gyro.SetCustomName("targetYaw="+targetYaw+", targetPitch="+targetPitch+", targetRoll="+targetRoll+", gyro.Yaw="+gyro.Yaw+", gyro.Pitch="+gyro.Pitch+", gyro.Roll="+ gyro.Roll);
     setAngularVelocity(gyro, "Yaw", gyro.Yaw, targetYaw);
     setAngularVelocity(gyro, "Pitch", gyro.Pitch, targetPitch);
     setAngularVelocity(gyro, "Roll", gyro.Roll, targetRoll);
