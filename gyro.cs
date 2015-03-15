@@ -109,20 +109,6 @@ void setAngularVelocity(IMyGyro gyro, string angleComponentName, float currentAn
     }
 }
 
-/*
-Vector3 transform(IMyGyro gyro, Vector3 vec) {
-    IMyCubeGrid cubeGrid = gyro.CubeGrid;
-
-    Matrix matrix;
-    gyro.Orientation.GetMatrix(out matrix);
-    return cubeGrid.GetCubeBlock(toVectori(gyro.Position + matrix.Transform(vec))).GetPosition();
-}
-
-VectorI toVectorI(Vector3 vector3) {
-    return new VectorI(vector3.X, vector3.Y, vector3.Z);
-}
-*/
-
 float narf(string x) {
     //throw new Exception(x.ToString());
     return float.Parse(x);
