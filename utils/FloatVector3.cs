@@ -108,22 +108,6 @@ public class FloatVector3 {
         );
     }
 
-    public static FloatVector3 operator /(FloatVector3 v1, FloatVector3 v2) {
-        return new FloatVector3(
-            v1.x / v2.x,
-            v1.y / v2.y,
-            v1.z / v2.z
-        );
-    }
-
-    public static FloatVector3 operator /(FloatVector3 v1, float f) {
-        return new FloatVector3(
-            v1.x / f,
-            v1.y / f,
-            v1.z / f
-        );
-    }
-
     public static FloatVector3 operator -(FloatVector3 v) {
         return v * -1;
     }
