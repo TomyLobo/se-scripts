@@ -68,7 +68,7 @@ class FloatMatrix3 {
     #endregion MatrixOpsMatrix
 
     #region MatrixOpsVector
-    public FloatVector3 operator *(FloatMatrix3 m, FloatVector3 v) {
+    public static FloatVector3 operator *(FloatMatrix3 m, FloatVector3 v) {
         FloatVector3 ret = new FloatVector3();
         for (int i = 0; i < 3; ++i) {
             ret[i] = 0;
