@@ -99,14 +99,14 @@ namespace opMatrix {
             if (m02 < 1.0f) {
                 if (m02 > -1.0f) {
                     return new FloatVector3(
-                        Math.Atan2(-(double) m12, (double) m22),
-                        Math.Asin((double) m02),
-                        Math.Atan2(-(double) m01, (double) m00)
+                    (float) Math.Atan2(-m12, m22),
+                    (float) Math.Asin(m02),
+                    (float) Math.Atan2(-m01, m00)
                     );
                 }
                 else {
                     return new FloatVector3(
-                        -Math.Atan2((double) m10, (double) m11),
+                    -(float) Math.Atan2(m10, m11),
                         -1.570796f,
                         0.0f
                     );
@@ -114,7 +114,7 @@ namespace opMatrix {
             }
             else {
                 return new FloatVector3(
-                    Math.Atan2((double) m10, (double) m11),
+                (float) Math.Atan2(m10, m11),
                     -1.570796f,
                     0.0f
                 );
