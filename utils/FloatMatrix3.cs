@@ -46,7 +46,7 @@ class FloatMatrix3 {
         FloatMatrix3 ret = new FloatMatrix3();
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                ret[i, j] = data[i * 3 + j];
+                ret[i, j] = this[j, i];
             }
         }
         return ret;
@@ -55,15 +55,16 @@ class FloatMatrix3 {
 
     #region MatrixOpsMatrix
     public static FloatMatrix3 operator *(FloatMatrix3 v1, FloatMatrix3 v2) {
-        FloatMatrix3 A = v1;
-        for (int i = 0; i<3; ++i)
+        FloatMatrix3 ret = new FloatMatrix3();
+        for (int i = 0; i<3; ++i) {
             for (int j = 0; j<3; ++j) {
-                v1[i,j] = 0;
+                ret[i,j] = 0;
                 for (int r = 0; r < 3; ++r) {
-                    v1[i, j] += A[i, r] * v2[r, j];
+                    ret[i, j] += v1[i, r] * v2[r, j];
                 }
             }
-        return v1;
+        }
+        return ret;
     }
     #endregion MatrixOpsMatrix
 
@@ -114,5 +115,9 @@ class FloatMatrix3 {
                 0.0f
             );
         }
+    }
+    
+    public string ToString() {
+        return string.Join(",", data);
     }
 }
