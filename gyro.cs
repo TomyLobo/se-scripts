@@ -63,10 +63,14 @@ FloatMatrix3 getRotation(IMyCubeGrid cubeGrid) {*/
     Matrix matrix;
     gyro.Orientation.GetMatrix(out matrix);
     */
+    //var frontBlock = GridTerminalSystem.GetBlockWithName("Front");
     var backBlock = GridTerminalSystem.GetBlockWithName("Back");
+    //var topBlock = GridTerminalSystem.GetBlockWithName("Top");
     var bottomBlock = GridTerminalSystem.GetBlockWithName("Bottom");
 
+    //FloatVector3 forward = v(frontBlock.GetPosition()) - v(gyro.GetPosition());
     FloatVector3 forward = -(v(backBlock.GetPosition()) - v(gyro.GetPosition()));
+    //FloatVector3 up = v(topBlock.GetPosition()) - v(gyro.GetPosition());
     FloatVector3 up = -(v(bottomBlock.GetPosition()) - v(gyro.GetPosition()));
     //Vector3 forward = cubeGrid.GetCubeBlock(gyro.Position + matrix.Forward).GetPosition();
     //Vector3 up = -cubeGrid.GetCubeBlock(gyro.Position - matrix.Up).GetPosition();
