@@ -12,10 +12,11 @@ void Main() {
     movingDoors = nextMovingDoors;
     nextMovingDoors = new Dictionary<string, int>();
 
-    discoverDoors();
-    discoverSensors();
+    DiscoverDoors();
+    DiscoverSensors();
 
-    foreach (var groupEntry in doorsByGroup) {
+    var doorsByGroup2 = new List<KeyValuePair<string, Dictionary<string, IMyDoor>>>(doorsByGroup);
+    foreach (var groupEntry in doorsByGroup2) {
         string groupName = groupEntry.Key;
         Dictionary<string, IMyDoor> doorGroup = groupEntry.Value;
         if (!sensorsByGroup.ContainsKey(groupName)) {
@@ -25,7 +26,8 @@ void Main() {
         Dictionary<string, IMySensorBlock> sensorGroup = sensorsByGroup[groupName];
 
         var doorWrappers = new List<DoorWrapper>();
-        foreach (var indexEntry in doorGroup) {
+        var doorGroup2 = new List<KeyValuePair<string, IMyDoor>>(doorGroup);
+        foreach (var indexEntry in doorGroup2) {
             string index = indexEntry.Key;
             IMyDoor door = indexEntry.Value;
             if (!sensorGroup.ContainsKey(index)) {
@@ -36,34 +38,36 @@ void Main() {
             doorWrappers.Add(new DoorWrapper(door, sensor));
         }
 
-        foreach (var doorWrapper in doorWrappers) {
-            doorWrapper.otherDoorWrappers = filter(doorWrappers, doorWrapper);
+        for (int index = 0; index < doorWrappers.Count; index++) {
+            var doorWrapper = doorWrappers[index];
+            doorWrapper.otherDoorWrappers = Filter(doorWrappers, doorWrapper);
         }
     }
 }
 
-List<T> filter<T>(List<T> list, T except) where T : class {
+List<T> Filter<T>(List<T> list, T except) where T : class {
     var ret = new List<T>();
-    foreach (T element in list) {
+    for (int index = 0; index < list.Count; index++) {
+        T element = list[index];
         if (element == except) {
             continue;
         }
-
+    
         ret.Add(element);
     }
     return ret;
 }
 
 
-void discoverDoors() {
-    discover<IMyDoor>("Door", doorsByGroup);
+void DiscoverDoors() {
+    Discover<IMyDoor>("Door", doorsByGroup);
 }
 
-void discoverSensors() {
-    discover<IMySensorBlock>("Door", sensorsByGroup);
+void DiscoverSensors() {
+    Discover<IMySensorBlock>("Door", sensorsByGroup);
 }
 
-public void discover<T>(string type, Dictionary<string, Dictionary<string, T>> blocksByGroup) where T : class, IMyTerminalBlock {
+public void Discover<T>(string type, Dictionary<string, Dictionary<string, T>> blocksByGroup) where T : class, IMyTerminalBlock {
     List<IMyTerminalBlock> doors = new List<IMyTerminalBlock>();
     GridTerminalSystem.GetBlocksOfType<T>(doors);
 
@@ -121,12 +125,7 @@ public class DoorWrapper {
                 return movingDoors[door.CustomName];
             }
 
-            if (door.Open) {
-                return DoorState.OPEN;
-            }
-            else {
-                return DoorState.CLOSED;
-            }
+            return door.Open ? DoorState.OPEN : DoorState.CLOSED;
         }
     }
 
@@ -140,7 +139,8 @@ public class DoorWrapper {
             case DoorState.CLOSED:
             case DoorState.CLOSING:
                 if (otherDoorWrappers != null) {
-                    foreach (DoorWrapper otherDoorWrapper in otherDoorWrappers) {
+                    for (int index = 0; index < otherDoorWrappers.Count; index++) {
+                        DoorWrapper otherDoorWrapper = otherDoorWrappers[index];
                         if (otherDoorWrapper.state != DoorState.CLOSED) {
                             return;
                         }
