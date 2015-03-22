@@ -178,6 +178,20 @@ public class DoorWrapper {
 
 
     void open() {
+        debugprint(door.CustomName+" looped1 "+(otherDoorWrappers != null));
+        if (otherDoorWrappers != null) {
+            debugprint(door.CustomName+" looped2 "+(otherDoorWrappers.First != null));
+            var currentNode = otherDoorWrappers.First;
+            while (currentNode != null) {
+                DoorWrapper otherDoorWrapper = currentNode.Value;
+                currentNode = currentNode.Next;
+                if (otherDoorWrapper.state != DoorState.CLOSED) {
+                    close();
+                    return;
+                }
+            }
+        }
+
         switch (state) {
             case DoorState.OPEN:
             case DoorState.OPENING:
@@ -185,18 +199,6 @@ public class DoorWrapper {
 
             case DoorState.CLOSED:
             case DoorState.CLOSING:
-                debugprint(door.CustomName+" looped1 "+(otherDoorWrappers != null));
-                if (otherDoorWrappers != null) {
-                    debugprint(door.CustomName+" looped2 "+(otherDoorWrappers.First != null));
-                    var currentNode = otherDoorWrappers.First;
-                    while (currentNode != null) {
-                        DoorWrapper otherDoorWrapper = currentNode.Value;
-                        currentNode = currentNode.Next;
-                        if (otherDoorWrapper.state != DoorState.CLOSED) {
-                            return;
-                        }
-                    }
-                }
 
                 door.ApplyAction("Open_On");
 
@@ -216,7 +218,7 @@ public class DoorWrapper {
             case DoorState.OPENING:
                 door.ApplyAction("Open_Off");
 
-                nextMovingDoors[door.CustomName] = DoorState.CLOSING;
+                //nextMovingDoors[door.CustomName] = DoorState.CLOSING;
                 var tmp = state;
                 break;
         }
