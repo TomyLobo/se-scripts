@@ -14,10 +14,11 @@ void Main() {
 
     DiscoverDoors();
     DiscoverSensors();
-
     var doorsByGroup2 = new List<KeyValuePair<string, Dictionary<string, IMyDoor>>>(doorsByGroup);
-    foreach (var groupEntry in doorsByGroup2) {
+    for (int i = 0; i < doorsByGroup2.Count; i++) {
+        var groupEntry = doorsByGroup2[i];
         string groupName = groupEntry.Key;
+
         Dictionary<string, IMyDoor> doorGroup = groupEntry.Value;
         if (!sensorsByGroup.ContainsKey(groupName)) {
             continue;
@@ -25,30 +26,35 @@ void Main() {
 
         Dictionary<string, IMySensorBlock> sensorGroup = sensorsByGroup[groupName];
 
-        var doorWrappers = new List<DoorWrapper>();
+        List<DoorWrapper> doorWrappers = new List<DoorWrapper>();
         var doorGroup2 = new List<KeyValuePair<string, IMyDoor>>(doorGroup);
-        foreach (var indexEntry in doorGroup2) {
+        for (int j = 0; j < doorGroup2.Count; j++) {
+            var indexEntry = doorGroup2[j];
+
             string index = indexEntry.Key;
             IMyDoor door = indexEntry.Value;
+
             if (!sensorGroup.ContainsKey(index)) {
                 continue;
             }
+
             IMySensorBlock sensor = sensorGroup[index];
 
             doorWrappers.Add(new DoorWrapper(door, sensor));
         }
 
-        for (int index = 0; index < doorWrappers.Count; index++) {
-            var doorWrapper = doorWrappers[index];
+        for (int k = 0; k < doorWrappers.Count; k++) {
+            var doorWrapper = doorWrappers[k];
             doorWrapper.otherDoorWrappers = Filter(doorWrappers, doorWrapper);
+            doorWrapper.refreshSensorState();
         }
     }
 }
 
-List<T> Filter<T>(List<T> list, T except) where T : class {
+public List<T> Filter<T>(List<T> list, T except) where T : class {
     var ret = new List<T>();
     for (int index = 0; index < list.Count; index++) {
-        T element = list[index];
+        T element = list[index] as T;
         if (element == except) {
             continue;
         }
@@ -64,30 +70,31 @@ void DiscoverDoors() {
 }
 
 void DiscoverSensors() {
-    Discover<IMySensorBlock>("Door", sensorsByGroup);
+    Discover<IMySensorBlock>("Sensor", sensorsByGroup);
 }
 
 public void Discover<T>(string type, Dictionary<string, Dictionary<string, T>> blocksByGroup) where T : class, IMyTerminalBlock {
-    List<IMyTerminalBlock> doors = new List<IMyTerminalBlock>();
-    GridTerminalSystem.GetBlocksOfType<T>(doors);
+    blocksByGroup.Clear();
+    List<IMyTerminalBlock> blocks = new List<IMyTerminalBlock>();
+    GridTerminalSystem.GetBlocksOfType<T>(blocks);
 
-    for (int i = 0; i < doors.Count; i++) {
-        T door = doors[i] as T;
+    for (int i = 0; i < blocks.Count; i++) {
+        T block = blocks[i] as T;
 
-        var match = System.Text.RegularExpressions.Regex.Match(door.CustomName, "^" + prefix + type + " ([^ ]+) ([^ ]+)$");
+        var match = System.Text.RegularExpressions.Regex.Match(block.CustomName, "^" + prefix + type + " ([^ ]+) ([^ ]+)$");
         if (!match.Success) {
             continue;
         }
 
-        var groupName = match.Groups[0].Value;
-        var index = match.Groups[1].Value;
+        var groupName = match.Groups[1].Value;
+        var index = match.Groups[2].Value;
 
         if (!blocksByGroup.ContainsKey(groupName)) {
             blocksByGroup[groupName] = new Dictionary<string, T>();
         }
         var group = blocksByGroup[groupName];
 
-        group[index] = door;
+        group[index] = block;
     }
 }
 
@@ -108,13 +115,6 @@ public class DoorWrapper {
         this.sensor = sensor;
     }
 
-    /*
-    public DoorWrapper(IMyDoor door, DoorWrapper otherDoorWrapper) : this(door) {
-        this.otherDoorWrapper = otherDoorWrapper;
-        otherDoorWrapper.otherDoorWrapper = this;
-    }
-    */
-
     public int state {
         get {
             if (nextMovingDoors.ContainsKey(door.CustomName)) {
@@ -125,7 +125,12 @@ public class DoorWrapper {
                 return movingDoors[door.CustomName];
             }
 
-            return door.Open ? DoorState.OPEN : DoorState.CLOSED;
+            if (door.Open) {
+                return DoorState.OPEN;
+            }
+            else {
+                return DoorState.CLOSED;
+            }
         }
     }
 
@@ -139,8 +144,8 @@ public class DoorWrapper {
             case DoorState.CLOSED:
             case DoorState.CLOSING:
                 if (otherDoorWrappers != null) {
-                    for (int index = 0; index < otherDoorWrappers.Count; index++) {
-                        DoorWrapper otherDoorWrapper = otherDoorWrappers[index];
+                    for (int i = 0; i < otherDoorWrappers.Count; i++) {
+                        DoorWrapper otherDoorWrapper = otherDoorWrappers[i];
                         if (otherDoorWrapper.state != DoorState.CLOSED) {
                             return;
                         }
@@ -160,7 +165,8 @@ public class DoorWrapper {
         nextMovingDoors[door.CustomName] = DoorState.CLOSING;
     }
 
-    void setDoorSensorState(bool state) {
+    public void refreshSensorState() {
+        bool state = sensor.IsActive;
         if (state) {
             open();
         }
