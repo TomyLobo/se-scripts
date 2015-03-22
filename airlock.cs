@@ -16,7 +16,7 @@ public static void debugprint(String s) {
     dbg += s;
     dbg += " ";
     //dbg += "\n";
-    debugBlock.SetCustomName(dbg);
+    //debugBlock.SetCustomName(dbg);
 }
 
 
