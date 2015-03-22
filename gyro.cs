@@ -63,13 +63,13 @@ FloatMatrix3 getRotation(IMyCubeGrid cubeGrid) {*/
     Matrix matrix;
     gyro.Orientation.GetMatrix(out matrix);
     */
-    //var frontBlock = GridTerminalSystem.GetBlockWithName("Front");
-    var backBlock = GridTerminalSystem.GetBlockWithName("Back");
-    //var topBlock = GridTerminalSystem.GetBlockWithName("Top");
-    var bottomBlock = GridTerminalSystem.GetBlockWithName("Bottom");
+    var frontBlock = GridTerminalSystem.GetBlockWithName(gyro.CustomName+" Front");
+    //var backBlock = GridTerminalSystem.GetBlockWithName(gyro.CustomName+" Back");
+    //var topBlock = GridTerminalSystem.GetBlockWithName(gyro.CustomName+" Top");
+    var bottomBlock = GridTerminalSystem.GetBlockWithName(gyro.CustomName+" Bottom");
 
-    //FloatVector3 forward = v(frontBlock.GetPosition()) - v(gyro.GetPosition());
-    FloatVector3 forward = -(v(backBlock.GetPosition()) - v(gyro.GetPosition()));
+    FloatVector3 forward = v(frontBlock.GetPosition()) - v(gyro.GetPosition());
+    //FloatVector3 forward = -(v(backBlock.GetPosition()) - v(gyro.GetPosition()));
     //FloatVector3 up = v(topBlock.GetPosition()) - v(gyro.GetPosition());
     FloatVector3 up = -(v(bottomBlock.GetPosition()) - v(gyro.GetPosition()));
     //Vector3 forward = cubeGrid.GetCubeBlock(gyro.Position + matrix.Forward).GetPosition();
@@ -112,7 +112,7 @@ void setAngularVelocity(IMyGyro gyro, ref FloatMatrix3 matrix) {
 }
 
 void setAngularVelocity(IMyGyro gyro, float targetYaw, float targetPitch, float targetRoll) {
-    gyro.SetCustomName("targetYaw="+targetYaw+", targetPitch="+targetPitch+", targetRoll="+targetRoll/*+", gyro.Yaw="+gyro.Yaw+", gyro.Pitch="+gyro.Pitch+", gyro.Roll="+ gyro.Roll*/);
+    //gyro.SetCustomName("targetYaw="+targetYaw+", targetPitch="+targetPitch+", targetRoll="+targetRoll/*+", gyro.Yaw="+gyro.Yaw+", gyro.Pitch="+gyro.Pitch+", gyro.Roll="+ gyro.Roll*/);
     setAngularVelocity(gyro, "Yaw", gyro.Yaw, targetYaw);
     setAngularVelocity(gyro, "Pitch", gyro.Pitch, targetPitch);
     setAngularVelocity(gyro, "Roll", gyro.Roll, targetRoll);
