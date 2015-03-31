@@ -203,7 +203,6 @@ public class DoorWrapper {
 
             case DoorState.CLOSED:
             case DoorState.CLOSING:
-
                 door.ApplyAction("Open_On");
 
                 nextMovingDoors[door.CustomName] = DoorState.OPENING;
