@@ -206,7 +206,7 @@ public class DoorWrapper {
                 door.ApplyAction("Open_On");
 
                 nextMovingDoors[door.CustomName] = DoorState.OPENING;
-                var tmp = state;
+                var tmp = state; // Update debugstate
                 break;
         }
     }
@@ -222,7 +222,7 @@ public class DoorWrapper {
                 door.ApplyAction("Open_Off");
 
                 //nextMovingDoors[door.CustomName] = DoorState.CLOSING;
-                var tmp = state;
+                var tmp = state; // Update debugstate
                 break;
         }
     }
