@@ -115,13 +115,17 @@ public void Discover<T>(string type, Dictionary<string, Dictionary<string, T>> b
         var groupName = match.Groups[1].Value;
         var index = match.Groups[2].Value;
 
-        if (!blocksByGroup.ContainsKey(groupName)) {
-            blocksByGroup[groupName] = new Dictionary<string, T>();
-        }
-        var group = blocksByGroup[groupName];
+        var group = GetOrCreateSubDict(blocksByGroup, groupName);
 
         group[index] = block;
     }
+}
+
+private static Dictionary<K2, V> GetOrCreateSubDict<K, K2, V>(Dictionary<K, Dictionary<K2, V>> dictionary, K key) {
+    if (!dictionary.ContainsKey(key)) {
+        dictionary[key] = new Dictionary<K2, V>();
+    }
+    return dictionary[key];
 }
 
 public class DoorState {
